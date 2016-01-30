@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+	[SerializeField] private GameObject eggPrefab;
 	[SerializeField] private float groundSpeed;
 	[SerializeField] private float angularSpeed;
 	[SerializeField] private float jumpForceGround;
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour {
 	private float walk;
 	private float yaw;
 	private bool isJumpDown;
+	private bool isEggDown;
 
 	void Start () {
 		rb = gameObject.GetComponent<Rigidbody> ();
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour {
 		walk       = Input.GetAxis ("Walk");
 		yaw        = Input.GetAxis ("Yaw");
 		isJumpDown = Input.GetButtonDown ("Jump");
+		isEggDown  = Input.GetButtonDown ("Egg");
 	}
 
 	void FixedUpdate() {
@@ -51,6 +54,11 @@ public class PlayerController : MonoBehaviour {
 		} else if (isJumpDown) {
 			// Flap frantically in air
 			rb.AddRelativeForce (0, jumpForceAir, 0);
+		}
+
+		// Lay eggs
+		if (isEggDown) {
+			Instantiate (eggPrefab, transform.position, Quaternion.Euler(new Vector3(270, 0, 0)));
 		}
 	}
 }
